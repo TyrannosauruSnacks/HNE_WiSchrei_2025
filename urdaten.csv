@@ -1,0 +1,27 @@
+bundesland,dokument_typ,dokument_name,totholz_genannt,wert_oekol,wert_oekon,wert_soz,notiz
+Baden-Württemberg,waldbaurichtlinie,Richtlinie landesweiter Entwicklungstypen,,0,0,0,"nur weil durch artenschutz zu totholz verpflichtet, verweis auf totholzkonzept"
+Baden-Württemberg,totholzkonzept,Alt- und Totholzkonzept Baden-Württemberg,,1,-1,-1,NA
+Baden-Württemberg,andere,Die Gesamtkonzeption Waldnaturschutz ForstBW mit den Waldnaturschutzzielen 2020,,1,0,1,NA
+Bayern,waldbaurichtlinie,Waldbaugrundsätze der Bayerischen Staatsforsten,,1,0,0,NA
+Bayern,andere,LWF Merkblatt 17 – Biotopbäume und Totholz,,1,0,0,NA
+Bayern,andere,Naturschutzkonzept der Bayerischen Staatsforsten,,1,-1,1,NA
+Berlin,waldbaurichtlinie,Waldbaurichtlinie für die Berliner Forsten,,1,0,0,NA
+Brandenburg,waldbaurichtlinie,Waldbau-Richtlinie 2004 der Landesforstverwaltung Brandenburg,,1,0,0,totholz eh nicht wertvoll
+Bremen,andere,Waldentwicklungsplan für ausgewählte Waldflächen der Freien Hansestadt Bremen,,0,0,0,"totholz, wo dies ökologisch sinnvoll ist"
+Bremen,andere,Unsere Biodiversitätsstrategie – Umweltbetrieb Bremen,,1,0,0,NA
+Hamburg,waldbaurichtlinie,Globalrichtlinie Wald,,1,0,0,NA
+Hessen,waldbaurichtlinie,Richtlinie für die Bewirtschaftung des Staatswaldes (RiBeS 2018),,1,0,0,NA
+Hessen,andere,Naturschutzleitlinie,,NA,NA,NA,"in suche gelistet, aber 404, nicht verfügbar"
+Mecklenburg-Vorpommern,waldbaurichtlinie,Grüner Ordner Mecklenburg-Vorpommern,,1,0,-1,NA
+Niedersachsen,waldbaurichtlinie,Aktualisiertes Niedersächsisches Programm zur langfristigen ökoloischen Waldentwicklung in den Niedersächsischen Landesforsten (LÖWE+),,1,0,0,NA
+Nordrhein-Westfalen,waldbaurichtlinie,Waldbaukonzept Nordrhein-Westfalen,,1,0,-1,NA
+Rheinlad-Pfalz,waldbaurichtlinie,Ziele und Grundsätze einer ökologischen Waldentwicklung in Rheinland-Pfalz,,1,0,0,NA
+Rheinlad-Pfalz,totholzkonzept,"Konzept zum Umgang mit Biotopbäumen, Altbäumen und Totholz bei Landesforsten Rheinland-Pfalz",,1,0,-1,NA
+Saarland,waldbaurichtlinie,Waldbewirtschaftungsrichtlinie für den Staatswald des Saarlandes,,1,0,0,NA
+Sachsen,totholzkonzept,Biotopbaum- und Totholzkonzept für den Landeswald,,1,0,-1,NA
+Sachsen-Anhalt,andere,Merkblatt zum Erhalt und zur Förderung von Alt- und Totholz,,1,0,0,definition totholz
+Sachsen-Anhalt,andere,Leitfaden zur Bewirtschaftung des Landeswaldes,,0,0,0,vorgaben naturschutzrecht
+Sachsen-Anhalt,waldbaurichtlinie,Leitlinie Wald 2014 zur Erhaltung und weiteren nachhaltigen Entwicklung des Waldes im Land Sachsen-Anhalt,,1,-1,0,NA
+Schleswig-Holstein,waldbaurichtlinie,Programm zur Bewirtschaftung der schleswig-holsteinischen Wälder auf ökologischen Grundlagen,,0,0,0,NA
+Thüringen,andere,1.08 Hochstubben als Unterstuetzung zur Wiederbewaldung,,1,0,0,NA
+Nordrhein-Westfalen,totholzkonzept,"Biotpoholzstrategie ""Xylobius"" Nordrhein-Westfalen",,1,1,1,NA

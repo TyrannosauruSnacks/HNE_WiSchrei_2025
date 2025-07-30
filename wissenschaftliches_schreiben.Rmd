@@ -1,128 +1,133 @@
 ---
-title: "wissenschaftliches_schreiben"
+title: "Wissenschaftliches Schreiben, Appendix"
 author: "Max Hachemeister"
 date: "`r Sys.Date()`"
 output: html_document
 ---
 
+
 ## Requisiten
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-library(flextable)
-library(readODS)
 theme_set(theme_light())
 ```
 
-## Import
+
+## Import and prepare
+
 ```{r}
-gesamt <- read_ods("./131_uebersicht_bundeslaender.ods", 1) |>
-  mutate(wert_oekol = as.numeric(wert_oekol),
-         wert_oekon = as.numeric(wert_oekon),
-         wert_soz = as.numeric(wert_soz),
-         doc_mean = (wert_oekol + wert_oekon + wert_soz)/3,
-         dokument_typ = str_to_title(dokument_typ)) |> 
+gesamt <-
+  read_csv("urdaten.csv", col_types = "cc?ddd") |>
+  mutate(
+    doc_mean = (wert_oekol + wert_oekon + wert_soz) / 3,
+    dokument_typ = str_to_title(dokument_typ)
+  ) |>
   filter(!is.na(doc_mean))
 ```
 
+
 ## Wertklassen nach Dokumententyp
-```{r}
-gesamt |> 
-  group_by("Dokument-Typ" = dokument_typ ) |> 
-  summarise("ökologisch" = round(mean(wert_oekol), 2),
-            "ökonomisch" = round(mean(wert_oekon), 2),
-            "sozial" = round(mean(wert_soz), 2),
-            n = n())|> 
-  flextable() |> 
-  save_as_docx(path = "alle_dokumente_1.docx")
 
-gesamt |> 
-  group_by(dokument_typ) |> 
-  summarise("ökologisch" = mean(wert_oekol),
-            "ökonomisch" = mean(wert_oekon),
-            "sozial" = mean(wert_soz),
-            n = n())|> 
-  pivot_longer(ökologisch:sozial) |> 
-  mutate(dokument_typ = fct_reorder(dokument_typ, dokument_typ, .desc = TRUE)) |> 
+```{r}
+# Tabellarische Übersicht
+
+gesamt |>
+  group_by("Dokument-Typ" = dokument_typ) |>
+  summarise(
+    "ökologisch" = round(mean(wert_oekol), 2),
+    "ökonomisch" = round(mean(wert_oekon), 2),
+    "sozial" = round(mean(wert_soz), 2),
+    n = n()
+  )
+
+
+# Grafische Übersicht (Plot)
+
+gesamt |>
+  group_by(dokument_typ) |>
+  summarise(
+    "ökologisch" = mean(wert_oekol),
+    "ökonomisch" = mean(wert_oekon),
+    "sozial" = mean(wert_soz),
+    n = n()
+  ) |>
+  pivot_longer(ökologisch:sozial) |>
+  mutate(dokument_typ = fct_reorder(dokument_typ, dokument_typ, .desc = TRUE)) |>
   ggplot(aes(dokument_typ, value, fill = name)) +
-  geom_col(position = "dodge",
-           width = .33) +
+  geom_col(position = "dodge", width = .33) +
   expand_limits(y = -1) +
-  labs(
-    x = "Dokument-Typ",
-    y = "Wert",
-    #title = "Mittlere Bewertung zu Totholz",
-    #subtitle = "gemäß aller Onlinedokumente",
-    #caption = ,
-    fill = "Wert-Art"
-  )
+  labs(x = "Dokument-Typ", y = "Wert", fill = "Wert-Art")
 
-save_plot_fit <- ggsave("alle_dokumente_fit.png",
-                       units = "cm",
-                       width = 15,
-                       height = 10.45*.66,
-                       dpi = 600)
+#Plot als Grafik speichern
+#save_plot_fit <- ggsave("alle_dokumente_fit.png",
+#                       units = "cm",
+#                       width = 15,
+#                       height = 10.45*.66,
+#                       dpi = 600)
 ```
 
-## Übersicht Waldbaurichtlinien
-```{r}
+## Median pro Dokumentypen
 
-gesamt |> 
-  group_by(dokument_typ) |> 
+```{r}
+gesamt |>
+  group_by(dokument_typ) |>
   summarise(median = median(doc_mean))
-
-gesamt|> 
-  filter(dokument_typ == "Waldbaurichtlinie") |> 
-  mutate(bundesland = fct_reorder(bundesland, doc_mean)) |> 
-  group_by(bundesland) |> 
-  summarise(bewertung = mean(doc_mean)) |> 
-  ggplot(aes(bewertung, bundesland)) +
-  geom_vline(xintercept = median(gesamt$doc_mean, na.rm = TRUE), 
-             color = "grey50",
-             linetype = 2) +
-  geom_point(size = 2) +
-  annotate(geom = "text",
-           x = median(gesamt$doc_mean, na.rm = TRUE)+.01,
-           y = 1,
-           hjust = "left",
-           label = "Median",
-           color = "grey50") +
-  expand_limits(x = -1:1) +
-  labs(
-    x = "Bewertung",
-    y = "Bundesland",
-    #title = "Mittlere Bewertung von Totholz ",
-    #subtitle = "laut Waldbaurichtlinien der Bundesländer",
-    caption = "Bundesforsten, Sachsen und Thüringen habe keine Waldbaurichtlinien veröffentlicht"
-  )
-
-save_plot_fit <- ggsave("waldbaurichtlinien_fit.png",
-                       units = "cm",
-                       width = 15,
-                       height = 10.45*.66,
-                       dpi = 600)
-
-
-gesamt|> 
-  filter(dokument_typ == "Waldbaurichtlinie") |> 
-  mutate(bundesland = fct_reorder(bundesland, doc_mean)) |> 
-  group_by(bundesland) |> 
-  summarise(bewertung = mean(doc_mean)) |> 
-  filter(bewertung <= 0) |> 
-  left_join(gesamt |> filter (dokument_typ == "Waldbaurichtlinie"))
 ```
 
-## Übersicht Bewertung Bundesländer
-```{r}
-gesamt |> 
-  group_by(Bundesland = bundesland) |> 
-    reframe("ökologisch" = mean(wert_oekol),
-            "ökonomisch" = mean(wert_oekon),
-            "sozial" = mean(wert_soz),
-            "Anzahl Dokumente" = n()) |>
-  mutate(across(ökologisch:sozial, ~ round(.x, 2))) |> 
-  flextable() |> 
-  autofit() |> 
-save_as_docx(path = "./bewertung_gesamt.docx")
 
+## Übersicht Bewertung der Bundesländer laut Dokumententyp 'Waldbaurichtlinien'
+
+```{r}
+gesamt |>
+  filter(dokument_typ == "Waldbaurichtlinie") |>
+  mutate(bundesland = fct_reorder(bundesland, doc_mean)) |>
+  group_by(bundesland) |>
+  summarise(bewertung = mean(doc_mean)) |>
+  ggplot(aes(bewertung, bundesland)) +
+  geom_vline(
+    xintercept = median(gesamt$doc_mean, na.rm = TRUE),
+    color = "grey50",
+    linetype = 2
+  ) +
+  geom_point(size = 2) +
+  annotate(
+    geom = "text",
+    x = median(gesamt$doc_mean, na.rm = TRUE) + .01,
+    y = 1,
+    hjust = "left",
+    label = "Median",
+    color = "grey50"
+  ) +
+  expand_limits(x = -1:1) +
+  labs(x = "Bewertung",
+       y = "Bundesland",
+       #Falls die Beschreibung direkt im Plot stehen soll
+       #title = "Mittlere Bewertung von Totholz ",
+       #subtitle = "laut Waldbaurichtlinien der Bundesländer",
+       caption = "Bundesforsten, Sachsen und Thüringen habe keine Waldbaurichtlinien veröffentlicht")
+
+
+# Plot als Grafik speichern
+#save_plot_fit <- ggsave("waldbaurichtlinien_fit.png",
+#                       units = "cm",
+#                       width = 15,
+#                       height = 10.45*.66,
+#                       dpi = 600)
+```
+
+
+## Übersicht Bewertung Bundesländer laut aller Dokumente
+
+```{r}
+gesamt |>
+  group_by(Bundesland = bundesland) |>
+  reframe(
+    "ökologisch" = mean(wert_oekol),
+    "ökonomisch" = mean(wert_oekon),
+    "sozial" = mean(wert_soz),
+    "Anzahl Dokumente" = n()
+  ) |>
+  mutate(across(ökologisch:sozial, ~ round(.x, 2)))
 ```
